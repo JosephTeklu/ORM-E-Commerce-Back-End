@@ -1,44 +1,26 @@
 const router = require('express').Router();
 const sequelize = require('sequelize');
-const { Category, Product, Tag } = require('../../models');
+const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
 
 router.get('/', async (req, res) => {
-  // find all categories
-  // be sure to include its associated Products
 
   try {
     // grab all data with the product included
     const allCategories = await Category.findAll({include: Product});
-    // const allProducts = await Product.findAll();
     // send all categories
     res.status(200).json(allCategories);
-  } catch (error) {
-    res.status(500).json(err);
-  }
+  } catch (error) {res.status(500).json(err)}
 });
 
-router.get('/:id', (req, res) => {
-  // find one category by its `id` value
-  // be sure to include its associated Products
-      // include: {model: Product} //{model: Product, key: 'id'}
+router.get('/:id', async (req, res) => {
 
   try {
-    // get the produ
-    const atId = Category.findByPk(req.params.id, {
-      include: [{model: Product}],
-      attributes:{
-        include:[
-          [
-            sequelize.literal(`SELECT * FROM product WHERE product.category_id=${req.params.id}`),'products'
-          ],
-        ],
-      },
-    });
+    // get the category by it's id and the associated products under it
+    const atId = await Category.findByPk(req.params.id, {include: Product});
     // if there is nothing at the requested id
-    if(!atId)res.status(404).json({message: "No location at this id!"})
-    
+    if(!atId){res.status(404).json({message: "No category at this id!"}); return;}
     // send data
     res.status(200).json(atId);
   } catch (error) {
@@ -46,16 +28,48 @@ router.get('/:id', (req, res) => {
   }
 });
 
-router.post('/', (req, res) => {
-  // create a new category
+router.post('/', async (req, res) => {
+  try {
+    
+    // if the request is empty send error and return
+    if (!req.body) {res.status(404).json({ message: 'The json you have sent is empty' }); return;}
+
+    // create the new category based on the request and return json
+    const newCategory = await Category.create(req.body);
+    res.status(200).json(newCategory);
+
+  } catch (error) {res.status(400).json(err);}
 });
 
-router.put('/:id', (req, res) => {
-  // update a category by its `id` value
+router.put('/:id', async (req, res) => {
+  try {
+
+    // look for the category at the requestd id IF it dosent exist throw error and return
+    let findId = await Category.findByPk(req.params.id);
+    if(!findId){res.status(404).json({message: 'There is no category at the id you have sent'}); return;}
+
+    // update the body of where the requested id is
+    Category.update(req.body, {where: {id:req.params.id}});
+    res.status(200).json();
+
+  } catch (error) {res.status(400).json(err);}
+
 });
 
-router.delete('/:id', (req, res) => {
-  // delete a category by its `id` value
+router.delete('/:id', async (req, res) => {
+  try {
+
+    // look for the category at the requestd id IF it dosent exist throw error and return
+    let findId = await Category.findByPk(req.params.id);
+    if(!findId){res.status(404).json({message: 'There is no category at the id you have sent'}); return;}
+
+    // delete the category at the requested id
+    let categories = await Category.destroy({where: {id: req.params.id}});
+
+    // send json
+    res.status(200).json(categories);
+
+  } catch (error) {res.status(400).json(err);}
 });
 
 module.exports = router;

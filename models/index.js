@@ -30,6 +30,11 @@ Tag.belongsToMany(Product, {
   }
 });
 
+Tag.hasMany(ProductTag);
+ProductTag.belongsTo(Tag);
+Product.hasMany(ProductTag);
+ProductTag.belongsTo(Product);
+
 module.exports = {
   Product,
   Category,
