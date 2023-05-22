@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
   try {
     const allProducts = await Product.findAll({include: [Category, Tag]});
     res.status(200).json(allProducts);
-  } catch (error) {res.status(500).json(err)}
+  } catch (error) {res.status(500).json(error)}
 
 });
 
@@ -22,7 +22,7 @@ router.get('/:id', async (req, res) => {
     if(!atId) {res.status(404).json({message: "No Product at this id!"}); return;}
     // send data
     res.status(200).json(atId);
-  } catch (error) {res.status(500).json(err)}
+  } catch (error) {res.status(500).json(error)}
 });
 
 // create new product
@@ -99,8 +99,18 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+router.delete('/:id', async (req, res) => {
+  try {
+    // check if the given id exists
+    let findId = await Product.findByPk(req.params.id);
+    if(!findId) {res.status(404).json({message: 'There is no product in the id you send'})}
+
+    // delete the product at the given id
+    let products = await Product.destroy({where:{id: req.params.id}});
+    // send json
+    res.status(200).json(products);
+  } catch (error) {res.status(400).json(error);}
+
 });
 
 module.exports = router;
