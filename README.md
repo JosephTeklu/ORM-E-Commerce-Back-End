@@ -16,7 +16,7 @@
 ## Contributing 
   No cuntrubitions necessary at this time.
 ## Tests 
-  Using Inosminia test out the GET/POST/PUt/DELETE options to make changes to the db.
+  Using Inosminia test out the GET/POST/PUT/DELETE options to make changes to the db.
 ## Questions
   Contact me at my github or my email for further questions: https://github.com/JosephTeklu jteklu@outlook.com
 ## License
