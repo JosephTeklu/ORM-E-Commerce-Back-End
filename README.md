@@ -12,7 +12,7 @@
 ## Installation 
   To install this project first clone the repo unto your machine. Make sure you have Mysql Server, Node.js and Insominia installed. 
 ## Usage 
-  In your terminal head over to the repo directory and run an (npm i) to update your dependicies. Login to your Mysql and run (db/schema.sql) to create the database, you only have to do this once ever. Then run (npm run seed) to seed the database. Using the (.env.EXAMPLE) file provided make your own (.env) file and add in your own credentials for Mysql Server. Then run (npm run watch) which restarts the server for you if you make a change to the code. Open up Insominia and test the code with the GET/PUT/POST/DELETE options in (localhost:3001). Check out this video to see the application at work in Insominai LINK().
+  In your terminal head over to the repo directory and run an (npm i) to update your dependicies. Login to your Mysql and run (db/schema.sql) to create the database, you only have to do this once ever. Then run (npm run seed) to seed the database. Using the (.env.EXAMPLE) file provided make your own (.env) file and add in your own credentials for Mysql Server. Then run (npm run watch) which restarts the server for you if you make a change to the code. Open up Insominia and test the code with the GET/PUT/POST/DELETE options in (localhost:3001). Check out this video to see the application at work in Insominai LINK(https://watch.screencastify.com/v/PcQzzJ3vB3O7nhTJCun5).
 ## Contributing 
   No cuntrubitions necessary at this time.
 ## Tests 
